@@ -1,5 +1,3 @@
-export function doSomething() {};
-
 export default class {
   constructor(hostElementId, insertBefore = false) {
     if (hostElementId) {
@@ -20,7 +18,7 @@ export default class {
   attach() {
     this.hostElement.insertAdjacentElement(
       this.insertBefore ? 'afterbegin' : 'beforeend',
-      this.element
+      this.element,
     );
   }
 }

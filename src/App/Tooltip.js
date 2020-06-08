@@ -1,6 +1,4 @@
-import Cmp, { doSomething } from './Component.js';
-
-console.log('Tooltip running');
+import { Cmp } from './Component.js';
 
 export class Tooltip extends Cmp {
   constructor(closeNotifierFunction, text, hostElementId) {
@@ -8,18 +6,24 @@ export class Tooltip extends Cmp {
     this.closeNotifier = closeNotifierFunction;
     this.text = text;
     this.create();
+    this.closeTooltip = () => {
+      this.detach();
+      this.closeNotifier();
+    };
   }
 
-  closeTooltip = () => {
-    this.detach();
-    this.closeNotifier();
-  };
+  // closeTooltip = () => {
+  //   this.detach();
+  //   this.closeNotifier();
+  // };
 
   create() {
     const tooltipElement = document.createElement('div');
+
     tooltipElement.className = 'card';
     const tooltipTemplate = document.getElementById('tooltip');
     const tooltipBody = document.importNode(tooltipTemplate.content, true);
+
     tooltipBody.querySelector('p').textContent = this.text;
     tooltipElement.append(tooltipBody);
 
@@ -32,8 +36,9 @@ export class Tooltip extends Cmp {
     const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
 
     tooltipElement.style.position = 'absolute';
-    tooltipElement.style.left = x + 'px'; // 500px
-    tooltipElement.style.top = y + 'px';
+    // 500px
+    tooltipElement.style.left = `${x}px`;
+    tooltipElement.style.top = `${y}px`;
 
     tooltipElement.addEventListener('click', this.closeTooltip);
     this.element = tooltipElement;
